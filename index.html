@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CONVIVE360 · Convivencia escolar en orden</title>
+<meta name="description" content="CONVIVE360 ayuda a Prefectura, Gabinete y Dirección a registrar incidencias de convivencia escolar, darles seguimiento y detectar a tiempo a los alumnos que necesitan atención.">
+<meta name="theme-color" content="#0C2A4B">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<meta property="og:title" content="CONVIVE360 · Convivencia escolar en orden">
+<meta property="og:description" content="Reportes, seguimiento y expedientes de convivencia escolar en un solo lugar, con o sin internet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --tinta: #0C2A4B;      /* azul marino de la marca */
+    --verde: #1BA3A6;      /* verde azulado de la marca */
+    --verde-osc: #0E7476;
+    --papel: #FFFFFF;
+    --niebla: #EEF3F6;
+    --gris: #4A5B6E;
+    --linea: #D5DEE6;
+    --alerta: #B83227;
+    --alerta-fondo: #FDF1EF;
+    --sans: "Montserrat", "Segoe UI", Arial, sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  [hidden] { display: none !important; }
+  html { scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--papel); color: var(--tinta); font-family: var(--serif); font-size: 1.125rem; line-height: 1.6; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--verde); outline-offset: 3px; border-radius: 4px; }
+  .envolver { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- Encabezado ---------- */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(255,255,255,.94); }
+  header.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--linea); }
+  header.barra .envolver { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 68px; }
+  header.barra img { height: 34px; width: auto; }
+  nav { display: flex; gap: 1.6rem; font-family: var(--sans); font-weight: 600; font-size: .92rem; }
+  nav a { text-decoration: none; color: var(--gris); }
+  nav a:hover { color: var(--tinta); }
+  @media (max-width: 760px) { nav { display: none; } }
+
+  .boton { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--sans); font-weight: 700; font-size: 1rem; text-decoration: none; border-radius: 10px; padding: .85rem 1.35rem; border: 2px solid var(--tinta); cursor: pointer; transition: background .15s, color .15s; }
+  .boton.lleno { background: var(--tinta); color: #fff; }
+  .boton.lleno:hover { background: #163C66; }
+  .boton.hueco { background: transparent; color: var(--tinta); }
+  .boton.hueco:hover { background: var(--niebla); }
+  .boton.chico { padding: .5rem .95rem; font-size: .9rem; }
+
+  /* ---------- Portada ---------- */
+  .portada { padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3rem, 7vw, 6rem); border-bottom: 1px solid var(--linea); }
+  .portada .envolver { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+  @media (max-width: 900px) { .portada .envolver { grid-template-columns: 1fr; } }
+  h1, h2, h3 { font-family: var(--sans); color: var(--tinta); margin: 0; letter-spacing: -.015em; }
+  h1 { font-size: clamp(2.2rem, 4.8vw, 3.6rem); line-height: 1.08; font-weight: 800; }
+  .portada p.entrada { font-size: clamp(1.1rem, 1.6vw, 1.28rem); color: var(--gris); max-width: 34em; margin: 1.3rem 0 2rem; }
+  .acciones { display: flex; flex-wrap: wrap; gap: .8rem; }
+  .nota { font-family: var(--sans); font-size: .9rem; color: var(--gris); margin-top: 1.4rem; display: flex; gap: .5rem; align-items: center; }
+  .nota svg { flex: none; }
+
+  /* El documento: lo más característico del mundo escolar, un reporte con folio listo para firmar */
+  .escena { position: relative; min-height: 470px; }
+  .hoja { position: absolute; background: #fff; border: 1px solid var(--linea); border-radius: 6px; box-shadow: 0 30px 60px -28px rgba(12,42,75,.45), 0 2px 6px rgba(12,42,75,.08); }
+  .hoja.atras { inset: 34px 0 0 46px; transform: rotate(3.5deg); background: #FAFBFC; }
+  .hoja.frente { inset: 0 46px 34px 0; padding: 26px 28px; font-family: var(--serif); font-size: .82rem; line-height: 1.45; transform: rotate(-1.5deg); }
+  .hoja .cabeza { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 2px solid var(--tinta); padding-bottom: 10px; }
+  .hoja .cabeza b { font-family: var(--sans); font-size: .72rem; letter-spacing: .02em; display: block; }
+  .hoja .cabeza small { color: var(--gris); font-size: .7rem; }
+  .hoja .folio { font-family: var(--sans); font-weight: 800; font-size: .95rem; color: var(--verde-osc); text-align: right; white-space: nowrap; }
+  .hoja h4 { font-family: var(--sans); font-size: .95rem; text-align: center; margin: 14px 0 4px; }
+  .hoja .sub { text-align: center; color: var(--gris); font-size: .72rem; margin-bottom: 12px; }
+  .hoja dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0 0 12px; }
+  .hoja dt { font-family: var(--sans); font-weight: 700; font-size: .7rem; color: var(--gris); }
+  .hoja dd { margin: 0; }
+  .hoja .renglones { border-top: 1px solid var(--linea); padding-top: 8px; color: #33465A; }
+  .hoja .firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 26px; font-size: .68rem; text-align: center; color: var(--gris); }
+  .hoja .firmas span { border-top: 1px solid var(--tinta); padding-top: 4px; }
+  .aviso { position: absolute; right: 0; bottom: 0; width: min(330px, 86%); background: var(--alerta-fondo); border: 1px solid #F0C4BE; border-left: 5px solid var(--alerta); border-radius: 10px; padding: 14px 16px; font-family: var(--sans); box-shadow: 0 18px 40px -20px rgba(184,50,39,.5); }
+  .aviso b { color: var(--alerta); font-size: .92rem; display: block; }
+  .aviso .alumno { display: flex; justify-content: space-between; gap: .6rem; background: #fff; border: 1px solid #F0C4BE; border-radius: 8px; padding: 8px 10px; margin-top: 8px; font-size: .86rem; font-weight: 700; }
+  .aviso .alumno span { color: var(--alerta); white-space: nowrap; }
+  @media (max-width: 520px) { .escena { min-height: 520px; } .hoja.frente { inset: 0 18px 90px 0; } .hoja.atras { inset: 30px 0 70px 22px; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .hoja.atras { animation: entra-atras .9s cubic-bezier(.2,.8,.2,1) both .1s; }
+    .hoja.frente { animation: entra-frente .9s cubic-bezier(.2,.8,.2,1) both .25s; }
+    .aviso { animation: entra-aviso .6s cubic-bezier(.2,.8,.2,1) both 1s; }
+    @keyframes entra-atras { from { opacity: 0; transform: rotate(0deg) translateY(30px); } }
+    @keyframes entra-frente { from { opacity: 0; transform: rotate(0deg) translateY(40px); } }
+    @keyframes entra-aviso { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+  }
+
+  /* ---------- Secciones ---------- */
+  section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  h2 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); line-height: 1.15; font-weight: 800; max-width: 22em; }
+  .intro { color: var(--gris); max-width: 38em; margin: .9rem 0 0; }
+
+  /* Un día en la escuela: es una secuencia real, por eso va numerada */
+  .dia { list-style: none; margin: 2.8rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; counter-reset: paso; }
+  .dia li { counter-increment: paso; padding: 0 1.2rem 0 0; position: relative; }
+  .dia li::before { content: counter(paso); display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--tinta); color: #fff; font-family: var(--sans); font-weight: 800; margin-bottom: 1rem; position: relative; z-index: 1; }
+  .dia li::after { content: ""; position: absolute; top: 1.2rem; left: 2.4rem; right: 0; height: 2px; background: var(--linea); }
+  .dia li:last-child::after { display: none; }
+  .dia h3 { font-size: 1.05rem; margin-bottom: .4rem; }
+  .dia p { margin: 0; color: var(--gris); font-size: 1rem; }
+  @media (max-width: 900px) {
+    .dia { grid-template-columns: 1fr; gap: 1.6rem; }
+    .dia li { padding: 0 0 0 3.6rem; }
+    .dia li::before { position: absolute; left: 0; top: 0; margin: 0; }
+    .dia li::after { top: 2.6rem; bottom: -1.6rem; left: 1.2rem; right: auto; width: 2px; height: auto; }
+  }
+
+  /* Formatos: una lista como la de un selector real */
+  .formatos { background: var(--niebla); }
+  .formatos .envolver { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  @media (max-width: 900px) { .formatos .envolver { grid-template-columns: 1fr; } }
+  .lista-formatos { list-style: none; margin: 0; padding: 0; background: #fff; border: 1px solid var(--linea); border-radius: 12px; overflow: hidden; }
+  .lista-formatos li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .95rem 1.2rem; border-top: 1px solid var(--linea); }
+  .lista-formatos li:first-child { border-top: 0; }
+  .lista-formatos b { font-family: var(--sans); font-size: 1rem; }
+  .lista-formatos span { color: var(--gris); font-size: .95rem; text-align: right; }
+  @media (max-width: 560px) { .lista-formatos li { flex-direction: column; gap: .15rem; } .lista-formatos span { text-align: left; } }
+  .detalle { margin-top: 1.6rem; display: grid; gap: 1rem; }
+  .detalle p { margin: 0; padding-left: 1rem; border-left: 3px solid var(--verde); }
+  .detalle b { font-family: var(--sans); font-size: .98rem; }
+
+  /* Cada área */
+  .areas { margin-top: 2.6rem; border-top: 2px solid var(--tinta); }
+  .area { display: grid; grid-template-columns: 15rem 1fr; gap: 2rem; padding: 1.6rem 0; border-bottom: 1px solid var(--linea); }
+  .area h3 { font-size: 1.2rem; }
+  .area h3 small { display: block; font-family: var(--serif); font-weight: 400; font-size: .95rem; color: var(--gris); letter-spacing: 0; margin-top: .2rem; }
+  .area ul { margin: 0; padding-left: 1.1rem; }
+  .area li { margin: .25rem 0; }
+  .area li::marker { color: var(--verde); }
+  @media (max-width: 760px) { .area { grid-template-columns: 1fr; gap: .6rem; } }
+
+  /* Privacidad: banda oscura */
+  .privacidad { background: var(--tinta); color: #E4ECF3; }
+  .privacidad h2 { color: #fff; }
+  .privacidad .intro { color: #B9CADA; }
+  .garantias { margin: 2.6rem 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 2.6rem; }
+  .garantias div { border-top: 2px solid var(--verde); padding-top: 1rem; }
+  .garantias h3 { color: #fff; font-size: 1.05rem; margin-bottom: .35rem; }
+  .garantias p { margin: 0; font-size: 1rem; color: #B9CADA; }
+  @media (max-width: 900px) { .garantias { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .garantias { grid-template-columns: 1fr; } }
+
+  /* Cómo empezamos: secuencia */
+  .inicio-pasos { list-style: none; margin: 2.4rem 0 0; padding: 0; counter-reset: p; display: grid; gap: 1.2rem; max-width: 46rem; }
+  .inicio-pasos li { counter-increment: p; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; }
+  .inicio-pasos li::before { content: counter(p); font-family: var(--sans); font-weight: 800; font-size: 1.6rem; color: var(--verde-osc); line-height: 1.2; }
+  .inicio-pasos b { font-family: var(--sans); display: block; font-size: 1.05rem; }
+  .inicio-pasos span { color: var(--gris); }
+
+  /* Cierre */
+  .cierre { background: var(--niebla); text-align: center; }
+  .cierre h2 { margin-inline: auto; }
+  .cierre .intro { margin-inline: auto; }
+  .cierre .acciones { justify-content: center; margin-top: 2rem; }
+
+  footer { background: var(--tinta); color: #9FB3C8; font-family: var(--sans); font-size: .85rem; padding: 2.6rem 0 2.2rem; }
+  footer .envolver { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: start; }
+  footer img { height: 30px; width: auto; }
+  footer p { margin: 0 0 .6rem; max-width: 52em; line-height: 1.55; }
+  footer b { color: #fff; }
+  @media (max-width: 700px) { footer .envolver { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="envolver">
+    <a href="#" aria-label="CONVIVE360, inicio"><img src="logo.svg" alt="CONVIVE360" width="158" height="34"></a>
+    <nav aria-label="Secciones">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#areas">Para cada área</a>
+      <a href="#privacidad">Privacidad</a>
+      <a href="#empezar">Cómo empezar</a>
+    </nav>
+    <a class="boton lleno chico" data-demo href="#">Ver la demostración</a>
+  </div>
+</header>
+
+<main>
+  <div class="portada">
+    <div class="envolver">
+      <div>
+        <h1>Cada reporte, cada seguimiento y cada expediente, en un solo lugar.</h1>
+        <p class="entrada">CONVIVE360 ayuda a Prefectura, Gabinete y Dirección a registrar las incidencias de convivencia escolar, darles seguimiento y detectar a tiempo a los alumnos que necesitan atención. Con formatos basados en la normativa de convivencia escolar del Estado de Jalisco.</p>
+        <div class="acciones">
+          <a class="boton lleno" data-demo href="#">Ver la demostración</a>
+          <a class="boton hueco" data-contacto href="#empezar">Solicitar información</a>
+        </div>
+        <p class="nota">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7476" stroke-width="2.2" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg>
+          Funciona en teléfono, tableta y computadora, con o sin internet.
+        </p>
+      </div>
+
+      <div class="escena" aria-label="Ejemplo de un reporte impreso y de una alerta de alumno">
+        <div class="hoja atras" aria-hidden="true"></div>
+        <div class="hoja frente">
+          <div class="cabeza">
+            <div><b>SECUNDARIA DE EJEMPLO</b><small>Ciclo Escolar 2026 - 2027, turno matutino</small></div>
+            <div class="folio">MT3A-00014</div>
+          </div>
+          <h4>Reporte de incidencia leve</h4>
+          <div class="sub">Con base en la normativa de convivencia escolar</div>
+          <dl>
+            <dt>Alumno</dt><dd>Diego Martínez Ruiz · 3° A</dd>
+            <dt>Fecha</dt><dd>14 de octubre de 2026, 9:15 h</dd>
+            <dt>Capturó</dt><dd>Mariana Torres Gil, Prefectura</dd>
+          </dl>
+          <div class="renglones">Se le encontró corriendo en el pasillo durante el cambio de clase. Se le hizo una llamada de atención y se dialogó sobre el respeto a los espacios comunes.</div>
+          <div class="firmas"><span>Prefectura</span><span>Madre, padre o tutor</span></div>
+        </div>
+        <div class="aviso" role="note">
+          <b>1 alumno con 3 o más reportes en 30 días</b>
+          <div class="alumno">Diego Martínez Ruiz <span>4 reportes</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="como-funciona">
+    <div class="envolver">
+      <h2>Así se trabaja un caso, del pasillo al expediente</h2>
+      <p class="intro">Cada persona registra lo que le toca desde su propio teléfono. La información llega sola a Dirección, ordenada por alumno.</p>
+      <ol class="dia">
+        <li><h3>Se captura en minutos</h3><p>Se busca al alumno por su nombre, se elige el formato y se pueden agregar hasta 3 fotos de evidencia.</p></li>
+        <li><h3>Sale con folio y listo para firmar</h3><p>El folio se asigna solo, aun sin internet, y el documento se imprime con los datos de la escuela.</p></li>
+        <li><h3>Se le da seguimiento</h3><p>Lo que pasa después se agrega como nota firmada que no se edita ni se borra.</p></li>
+        <li><h3>El sistema avisa</h3><p>Cuando un alumno acumula 3 o más reportes en 30 días, Dirección lo ve al entrar.</p></li>
+        <li><h3>El expediente, completo</h3><p>Todos los reportes del alumno, de todas las áreas, con notas y fotos, en un documento para imprimir.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="formatos">
+    <div class="envolver">
+      <div>
+        <h2>Los formatos que la escuela ya usa</h2>
+        <p class="intro">Basados en la normativa de convivencia escolar del Estado de Jalisco y en la Nueva Escuela Mexicana, con hechos frecuentes para empezar a escribir más rápido.</p>
+        <div class="detalle">
+          <p><b>Encabezado de su escuela.</b> Dependencia, nombre, CCT y turno se capturan una sola vez en cada aparato; el ciclo escolar se calcula solo.</p>
+          <p><b>Documentos que no se alteran.</b> Un reporte guardado queda como se firmó; las aclaraciones van como notas de seguimiento.</p>
+        </div>
+      </div>
+      <ul class="lista-formatos">
+        <li><b>Incidencia leve</b><span>Con medida formativa aplicada</span></li>
+        <li><b>Incidencia moderada</b><span>Con medida y aviso a la familia</span></li>
+        <li><b>Acta de hechos, incidencia grave</b><span>Hora, testigos y plan de intervención</span></li>
+        <li><b>Citatorio</b><span>Fecha y hora de la cita con la familia</span></li>
+        <li><b>Omisión de actividades</b><span>Tareas faltantes y acuerdos</span></li>
+        <li><b>Cita psicopedagógica</b><span>Exclusiva de Gabinete</span></li>
+        <li><b>Formato libre</b><span>Para lo que no cabe en los anteriores</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="areas">
+    <div class="envolver">
+      <h2>Una herramienta, cuatro formas de usarla</h2>
+      <p class="intro">Cada área entra con su propio usuario y ve solo lo que le corresponde.</p>
+      <div class="areas">
+        <div class="area">
+          <h3>Dirección<small>La vista completa</small></h3>
+          <ul>
+            <li>Consulta los reportes de todas las áreas y los organiza por alumno.</li>
+            <li>Recibe la alerta de alumnos con reportes frecuentes y abre su expediente con un toque.</li>
+            <li>Da de alta al personal y asigna a cada prefecto los grados a su cargo.</li>
+            <li>Revisa en la bitácora quién entró y qué se consultó.</li>
+          </ul>
+        </div>
+        <div class="area">
+          <h3>Prefectura<small>Donde pasan las cosas</small></h3>
+          <ul>
+            <li>Captura en el pasillo o en el patio, con o sin señal.</li>
+            <li>Ve sus reportes y los de los alumnos de los grados que tiene a cargo.</li>
+            <li>Agrega notas de seguimiento y recibe las de Dirección.</li>
+          </ul>
+        </div>
+        <div class="area">
+          <h3>Gabinete psicopedagógico<small>Con la confidencialidad que exige su trabajo</small></h3>
+          <ul>
+            <li>Registra citas psicopedagógicas: primera cita, seguimiento, entrevista con la familia, canalización o cierre.</li>
+            <li>Sus registros son confidenciales; decide cuáles comparte con la prefectura del grado.</li>
+          </ul>
+        </div>
+        <div class="area">
+          <h3>Secretaría<small>La lista oficial de alumnos</small></h3>
+          <ul>
+            <li>Lleva el padrón: altas por grupo completo, bajas y correcciones, sin acceso a reportes.</li>
+            <li>Con el cambio de ciclo, los alumnos suben de grado y su expediente los acompaña.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacidad" id="privacidad">
+    <div class="envolver">
+      <h2>La información de sus alumnos es de su escuela</h2>
+      <p class="intro">CONVIVE360 se instala en las cuentas de Google de la propia escuela. Nosotros no guardamos los datos de sus alumnos.</p>
+      <div class="garantias">
+        <div><h3>En sus cuentas</h3><p>Reportes, notas y fotos se guardan en archivos de la escuela. Si un día deja de usar el sistema, la información se queda con ustedes.</p></div>
+        <div><h3>Acceso personal</h3><p>Cada persona entra con su usuario y su contraseña, que se guarda cifrada. Al dar de baja una cuenta, el acceso se cierra de inmediato.</p></div>
+        <div><h3>Cada quien ve lo suyo</h3><p>Prefectura ve sus reportes y los de sus grados; Gabinete decide qué comparte; Secretaría no ve reportes.</p></div>
+        <div><h3>Fotos protegidas</h3><p>Se guardan en una carpeta privada, reducidas y sin datos de ubicación.</p></div>
+        <div><h3>Todo queda registrado</h3><p>La bitácora muestra quién entró, quién consultó la información y cada cambio de permisos.</p></div>
+        <div><h3>Plazos de conservación</h3><p>Los expedientes de los egresados se pueden depurar al cumplirse el plazo que defina la escuela.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="empezar">
+    <div class="envolver">
+      <h2>Cómo empezamos</h2>
+      <p class="intro">Licencia anual por escuela, con la instalación y la capacitación incluidas.</p>
+      <ol class="inicio-pasos">
+        <li><div><b>Demostración</b><span>Le mostramos la plataforma con una escuela ficticia, en cada una de sus áreas.</span></div></li>
+        <li><div><b>Instalación en las cuentas de la escuela</b><span>Configuramos el sistema, el padrón de alumnos y las cuentas del personal.</span></div></li>
+        <li><div><b>Capacitación</b><span>Sesión con cada área y manuales impresos para Dirección, Prefectura, Gabinete y Secretaría.</span></div></li>
+        <li><div><b>Acompañamiento</b><span>Soporte durante el ciclo escolar y actualizaciones sin costo adicional.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="cierre">
+    <div class="envolver">
+      <h2>Véalo funcionando antes de decidir</h2>
+      <p class="intro">Entre a la demostración como Dirección, Prefectura o Gabinete, con una visita guiada que le explica cada pantalla.</p>
+      <div class="acciones">
+        <a class="boton lleno" data-demo href="#">Ver la demostración</a>
+        <a class="boton hueco" data-whatsapp href="#" hidden>Escribir por WhatsApp</a>
+        <a class="boton hueco" data-correo href="#" hidden>Escribir un correo</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="envolver">
+    <img src="logo-blanco.svg" alt="CONVIVE360" width="140" height="30">
+    <div>
+      <p><b>CONVIVE360</b> es una herramienta independiente desarrollada por <b>Weird Games Mx</b>, basada en la normativa de convivencia escolar del Estado de Jalisco. No es un sistema oficial de la Secretaría de Educación Jalisco ni cuenta con su aval.</p>
+      <p>© <span id="anio"></span> Weird Games Mx.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ============================================================
+  //  CONFIG: cambia aquí tus datos de contacto y la demostración
+  // ============================================================
+  const CONFIG = {
+    demo: "https://convive360.github.io/demo/?servidor=https://script.google.com/macros/s/AKfycbyJqd7U92ipn7TxVL1lHslGmOWCbGhmiq2zZlA08AnSF9av4iYvEvwKvvil9-zqkt6EQg/exec",
+    whatsapp: "",   // solo números con lada del país, ej. "523312345678"
+    correo: ""      // ej. "contacto@convive360.mx"
+  };
+
+  document.querySelectorAll("[data-demo]").forEach(a => { a.href = CONFIG.demo; a.target = "_blank"; a.rel = "noopener"; });
+  const msj = encodeURIComponent("Hola, me interesa conocer CONVIVE360 para mi escuela.");
+  document.querySelectorAll("[data-whatsapp]").forEach(a => { if (CONFIG.whatsapp) { a.href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + msj; a.target = "_blank"; a.rel = "noopener"; a.hidden = false; } });
+  document.querySelectorAll("[data-correo]").forEach(a => { if (CONFIG.correo) { a.href = "mailto:" + CONFIG.correo + "?subject=" + encodeURIComponent("Información sobre CONVIVE360"); a.hidden = false; } });
+  // «Solicitar información» lleva al medio de contacto disponible
+  document.querySelectorAll("[data-contacto]").forEach(a => {
+    if (CONFIG.whatsapp) { a.href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + msj; a.target = "_blank"; a.rel = "noopener"; }
+    else if (CONFIG.correo) a.href = "mailto:" + CONFIG.correo + "?subject=" + encodeURIComponent("Información sobre CONVIVE360");
+  });
+  document.getElementById("anio").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

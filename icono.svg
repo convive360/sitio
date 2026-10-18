@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" width="440" height="440" role="img" aria-label="CONVIVE360">
+<g transform="translate(20 20)"><defs>
+  <mask id="convive360-iconom1" maskUnits="userSpaceOnUse" x="-50" y="-50" width="500" height="500">
+    <rect x="-50" y="-50" width="500" height="500" fill="#fff"/>
+    <path d="M386.4 171.4 A196 74 -18 0 1 13.6 292.6" fill="none" stroke="#000" stroke-width="48" stroke-linecap="round"/>
+  </mask>
+  <mask id="convive360-iconom2" maskUnits="userSpaceOnUse" x="-50" y="-50" width="500" height="500">
+    <rect x="-50" y="-50" width="500" height="500" fill="#fff"/>
+    <path d="M200.0 46.0 L326.0 86.0 Q338.0 88.0 338.0 100.0 L338.0 196.0 C338.0 276.0 282.0 326.0 200.0 358.0 C118.0 326.0 62.0 276.0 62.0 196.0 L62.0 100.0 Q62.0 88.0 74.0 86.0 Z" fill="#000" stroke="#000" stroke-width="48" stroke-linejoin="round"/>
+  </mask>
+</defs>
+<g mask="url(#convive360-iconom2)">
+  <path d="M15.6 297.3 A196 74 -18 0 1 54.1 223.4" fill="none" stroke="#0C2A4B" stroke-width="30"/>
+  <path d="M341.8 142.4 A196 74 -18 0 1 386.2 170.8" fill="none" stroke="#1BA3A6" stroke-width="30"/>
+</g>
+<g mask="url(#convive360-iconom1)" stroke="#0C2A4B">
+  <path d="M200.0 46.0 L326.0 86.0 Q338.0 88.0 338.0 100.0 L338.0 196.0 C338.0 276.0 282.0 326.0 200.0 358.0 C118.0 326.0 62.0 276.0 62.0 196.0 L62.0 100.0 Q62.0 88.0 74.0 86.0 Z" fill="none" stroke-width="30" stroke-linejoin="round"/>
+</g>
+<path d="M386.4 171.4 A196 74 -18 0 1 13.6 292.6" fill="none" stroke="#0C2A4B" stroke-width="30"/></g>
+</svg>
