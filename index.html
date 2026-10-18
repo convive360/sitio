@@ -172,6 +172,9 @@
   footer img { height: 30px; width: auto; }
   footer p { margin: 0 0 .6rem; max-width: 52em; line-height: 1.55; }
   footer b { color: #fff; }
+  footer a { color: #fff; }
+  .contacto { font-family: var(--sans); font-size: .95rem; color: var(--gris); margin: 1.6rem 0 0; line-height: 1.7; }
+  .contacto a { color: var(--tinta); font-weight: 700; }
   @media (max-width: 700px) { footer .envolver { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -344,6 +347,7 @@
         <a class="boton hueco" data-whatsapp href="#" hidden>Escribir por WhatsApp</a>
         <a class="boton hueco" data-correo href="#" hidden>Escribir un correo</a>
       </div>
+      <p class="contacto">WhatsApp y teléfono: <a href="https://wa.me/523325534445">33 2553 4445</a><br>Correo: <a href="mailto:lestadgjg@gmail.com">lestadgjg@gmail.com</a></p>
     </div>
   </section>
 </main>
@@ -353,6 +357,7 @@
     <img src="logo-blanco.svg" alt="CONVIVE360" width="140" height="30">
     <div>
       <p><b>CONVIVE360</b> es una herramienta independiente desarrollada por <b>Weird Games Mx</b>, basada en la normativa de convivencia escolar del Estado de Jalisco. No es un sistema oficial de la Secretaría de Educación Jalisco ni cuenta con su aval.</p>
+      <p>Contacto: <a href="tel:+523325534445">33 2553 4445</a>, <a href="mailto:lestadgjg@gmail.com">lestadgjg@gmail.com</a></p>
       <p>© <span id="anio"></span> Weird Games Mx.</p>
     </div>
   </div>
@@ -363,9 +368,9 @@
   //  CONFIG: cambia aquí tus datos de contacto y la demostración
   // ============================================================
   const CONFIG = {
-    demo: "https://convive360.github.io/Demo/",
-    whatsapp: "",   // solo números con lada del país, ej. "3325534445"
-    correo: ""      // ej. "lestadgjg@gmail.com"
+    demo: "https://convive360.github.io/demo/?servidor=https://script.google.com/macros/s/AKfycbyJqd7U92ipn7TxVL1lHslGmOWCbGhmiq2zZlA08AnSF9av4iYvEvwKvvil9-zqkt6EQg/exec",
+    whatsapp: "523325534445",   // solo números con lada del país
+    correo: "lestadgjg@gmail.com"
   };
 
   document.querySelectorAll("[data-demo]").forEach(a => { a.href = CONFIG.demo; a.target = "_blank"; a.rel = "noopener"; });
